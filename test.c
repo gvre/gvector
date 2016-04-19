@@ -21,11 +21,11 @@ int main(void)
 {
     vector *v = vector_create(1, free);
     
-    vector_insert(v, strdup("v1"));
-    vector_insert(v, strdup("v2"));
-    vector_insert(v, strdup("v3"));
-    vector_insert(v, strdup("v4"));
-    vector_insert(v, strdup("v5"));
+    vector_push_back(v, strdup("v1"));
+    vector_push_back(v, strdup("v2"));
+    vector_push_back(v, strdup("v3"));
+    vector_push_back(v, strdup("v4"));
+    vector_push_back(v, strdup("v5"));
     assert(vector_size(v) == 5);
 
     for (size_t i = 0; i < vector_size(v); i++)
@@ -37,7 +37,7 @@ int main(void)
     vector_erase(v, 1);
     assert(vector_size(v) == 4);
     
-    vector_insert_at(v, strdup("v12"), 0);
+    vector_insert(v, 0, strdup("v12"));
     assert(vector_size(v) == 5);
     assert(strcmp((char *)vector_get(v, 0), "v12") == 0);
 
@@ -49,7 +49,7 @@ int main(void)
     assert(vector_size(v) == 0);
     assert(vector_empty(v));
 
-    vector_insert(v, strdup("v10"));
+    vector_push_back(v, strdup("v10"));
     printf("item at pos 0 is %s\n", (char *)vector_get(v, 0));
     assert(vector_size(v) == 1);
 

@@ -60,7 +60,7 @@ void vector_set_capacity_increase_factor(vector *v, float capacity_increase_fact
         v->capacity_increase_factor = capacity_increase_factor;
 }
 
-void vector_insert(vector *v, void *value)
+void vector_push_back(vector *v, void *value)
 {
     assert(v != NULL);
 
@@ -69,37 +69,37 @@ void vector_insert(vector *v, void *value)
     v->items[v->size++] = value;
 }
 
-
-void vector_insert_at(vector *v, void *value, size_t idx)
+void vector_insert(vector *v, size_t pos, void *value)
 {
     assert(v != NULL);
+    assert(pos < v->size);
 
     if (v->size == v->capacity)
         increase_capacity(v);
 
-    memmove(v->items + idx + 1, v->items + idx, (v->size - idx) * sizeof *v->items);
-    v->items[idx] = value;
+    memmove(v->items + pos + 1, v->items + pos, (v->size - pos) * sizeof *v->items);
+    v->items[pos] = value;
     v->size++;
 }
 
-size_t vector_set(vector *v, size_t idx, void *value)
+size_t vector_set(vector *v, size_t pos, void *value)
 {
     assert(v != NULL);
 
-    if (idx >= v->size)
+    if (pos >= v->size)
         return 0;
 
-    v->items[idx] = value;
+    v->items[pos] = value;
     return 1;
 }
 
-void *vector_get(vector *v, size_t idx)
+void *vector_get(vector *v, size_t pos)
 {
     assert(v != NULL);
 
-    if (idx >= v->size)
+    if (pos >= v->size)
         return NULL;
-    return v->items[idx];
+    return v->items[pos];
 }
 
 size_t vector_size(vector *v)
@@ -123,18 +123,18 @@ size_t vector_capacity(vector *v)
     return v->capacity;
 }
 
-void vector_erase(vector *v, size_t idx)
+void vector_erase(vector *v, size_t pos)
 {
     assert(v != NULL);
 
-    if (idx >= v->size)
+    if (pos >= v->size)
         return;
 
     if (v->dealloc_fn != NULL) {
-        v->dealloc_fn(v->items[idx]);
+        v->dealloc_fn(v->items[pos]);
         v->size--;
 
-        for (size_t i = idx; i < v->size; i++)
+        for (size_t i = pos; i < v->size; i++)
             v->items[i] = v->items[i + 1];
     }
 }
