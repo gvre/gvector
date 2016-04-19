@@ -69,6 +69,19 @@ void vector_insert(vector *v, void *value)
     v->items[v->size++] = value;
 }
 
+
+void vector_insert_at(vector *v, void *value, size_t idx)
+{
+    assert(v != NULL);
+
+    if (v->size == v->capacity)
+        increase_capacity(v);
+
+    memmove(v->items + idx + 1, v->items + idx, (v->size - idx) * sizeof *v->items);
+    v->items[idx] = value;
+    v->size++;
+}
+
 size_t vector_set(vector *v, size_t idx, void *value)
 {
     assert(v != NULL);

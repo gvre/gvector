@@ -28,17 +28,23 @@ int main(void)
     vector_insert(v, strdup("v5"));
     assert(vector_size(v) == 5);
 
-    printf("item at pos 0 is %s\n", (char *)vector_get(v, 0));
-    printf("item at pos 1 is %s\n", (char *)vector_get(v, 1));
-    printf("item at pos 2 is %s\n", (char *)vector_get(v, 2));
-    printf("item at pos 3 is %s\n", (char *)vector_get(v, 3));
-    printf("item at pos 4 is %s\n", (char *)vector_get(v, 4));
+    for (size_t i = 0; i < vector_size(v); i++)
+        printf("item at pos %zu is %s\n", i, (char *)vector_get(v, i));
+    printf("\n");
 
     assert(vector_get(v, 5) == NULL);
 
     vector_erase(v, 1);
     assert(vector_size(v) == 4);
     
+    vector_insert_at(v, strdup("v12"), 0);
+    assert(vector_size(v) == 5);
+    assert(strcmp((char *)vector_get(v, 0), "v12") == 0);
+
+    for (size_t i = 0; i < vector_size(v); i++)
+        printf("item at pos %zu is %s\n", i, (char *)vector_get(v, i));
+    printf("\n");
+
     vector_clear(v); 
     assert(vector_size(v) == 0);
     assert(vector_empty(v));
