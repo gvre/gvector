@@ -134,8 +134,8 @@ void vector_erase(vector *v, size_t pos)
         v->dealloc_fn(v->items[pos]);
         v->size--;
 
-        for (size_t i = pos; i < v->size; i++)
-            v->items[i] = v->items[i + 1];
+        if (pos < v->size)
+            memmove(v->items + pos, v->items + pos + 1, (v->size - pos) * sizeof *v->items);
     }
 }
 
@@ -146,9 +146,6 @@ void vector_clear(vector *v)
     if (v->dealloc_fn != NULL) {
         for (size_t i = 0; i < v->size; i++)
             v->dealloc_fn(v->items[i]);
-    } else {
-        for (size_t i = 0; i < v->size; i++)
-            v->items[i] = NULL;
     }
     v->size = 0;
 }
@@ -156,10 +153,7 @@ void vector_clear(vector *v)
 void vector_destroy(vector **v)
 {
     vector_clear(*v);
-
     free((*v)->items);
-    (*v)->items = NULL;
-
     free(*v);
     *v = NULL;
 }
